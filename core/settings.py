@@ -15,6 +15,7 @@ import os
 import environ
 from django.urls import reverse_lazy
 from django.contrib.messages import constants as messages
+from celery.beat import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,9 +48,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
-LOCAL_APPS = ["apps.users", "apps.movies", "apps.watchlists"]
+LOCAL_APPS = ["apps.users", "apps.movies",
+              "apps.watchlists", "apps.favorites",]
 
-INSTALLED_APPS += LOCAL_APPS
+THIRD_PARTY_APPS = ["django_celery_beat", "django_celery_results",]
+
+INSTALLED_APPS += LOCAL_APPS + THIRD_PARTY_APPS
 
 
 MIDDLEWARE = [
@@ -155,6 +159,40 @@ STATIC_ROOT = os.path.join(BASE_DIR / "staticfles")
 STATICFILES_DIRS = (os.path.join(BASE_DIR / "static"),)
 MEDIA_ROOT = os.path.join(BASE_DIR / "media")
 
+# Redis configuration.
+REDIS_URL = env("REDIS_URL")
+CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+
+# Additional settings for Django Celery Beat
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# celery beat configuration.
+CELERY_BEAT_SCHEDULE = {
+    "fetch-movie-every-day-from-tmdb-at-6am": {
+        "task": "core.tasks.fetch_movies_from_tmdb_and_save_to_database_task",
+        "schedule": crontab()
+    },
+    # "fetch-movie-every-day-from-tmdb-at-6am": {
+    #     "task": "core.tasks.fetch_movies_from_tmdb_and_save_to_database_task",
+    #     "schedule": crontab(minute=0, hour=6)
+    # }
+}
+
+# Caching.
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": CELERY_RESULT_BACKEND,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -164,5 +202,6 @@ AUTH_USER_MODEL = "users.CustomUser"
 
 # TMDB configuration
 API_KEY = env("TMDB_API_KEY")
-API_READ_ACCESS_TOKEN = env("TMDB_API_READ_ACCESS_TOKEN")
-BASE_URL = "https://api.themoviedb.org/3/"
+BEARER_TOKEN = env("TMDB_BEARER_TOKEN")
+API_BASE_URL = "https://api.themoviedb.org/3/"
+MOVIE_BASE_URL = "https://image.tmdb.org/t/p/"

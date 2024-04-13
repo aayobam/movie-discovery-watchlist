@@ -3,5 +3,5 @@ from .import views
 
 
 urlpatterns = [
-    path('movie-list', views.FetchMoviesView.as_view(), name="movie_list")
+    path('movie-detail<str:id>', views.MovieDetailView.as_view(), name="movie_detail")
 ]

@@ -1,8 +1,8 @@
 from django.contrib import admin
-from apps.watchlists.models import WatchList
+from apps.favorites.models import Favorite
 
 
-@admin.register(WatchList)
-class AdminWatchList(admin.ModelAdmin):
+@admin.register(Favorite)
+class AdminFavorite(admin.ModelAdmin):
     list_display = ('user', 'movie', 'date_created', 'date_updated')
     readonly_fields = ('id', 'user', 'movie')
