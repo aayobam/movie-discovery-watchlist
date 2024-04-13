@@ -13,7 +13,7 @@ class AddToFavoriteView(LoginRequiredMixin, generic.CreateView):
 
     def post(self, request, *args, **kwargs):
         movie_id = self.kwargs.get("movie_id")
-        movie_obj = get_object_or_404(Favorite, id=movie_id)
+        movie_obj = get_object_or_404(Movie, id=movie_id)
         if movie_obj is not None:
             instance: Favorite = self.model.objects.create(movie__id=movie_obj.id, user=request.user)
             instance.save()
