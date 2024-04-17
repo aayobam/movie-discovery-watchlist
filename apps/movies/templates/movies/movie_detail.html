@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <main>
+    <section class="overflow-hidden">
+      <div class="container-sm">
+        <!-- Show the user the trailer of the movie -->
+        <!-- -->
+        <div class="youtube-video-container my-4">
+          <!-- How to get the trailer video key from tmbd 
+          https://www.themoviedb.org/talk/5451ec02c3a3680245005e3c?page=4#5f6fc133f2cf25003a8dd6c3
+          in the src "https://www.youtube.com/embed/{kmJLuwP3MbY}" the  part that was enclose in curl brackets is going to unique
+          -->
+          <iframe
+            width="100%"
+            src="https://www.youtube-nocookie.com/embed/kmJLuwP3MbY"
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <!-- Show the user the trailer of the movie end -->
+
+        <button class="custom-btn btn fw-bolder shadow mb-3">Add To Watch list</button>
+        <div class="row g-5 details position-relative py-5 align-content-center" >
+          <!-- background image here should be dynamic -->
+          <div class="back-drop" style="background-image: url('https://image.tmdb.org/t/p/original//rKmp0vm6PNaFA0g1bzM70eyWJ6I.jpg');">
+          </div>
+
+          <div class="detail-img col-4 position-relative">
+            <img src="{{ movie.poster_path }}" alt="" class="img-fluid" />
+            <div class="fav position-absolute rounded-pill d-flex align-items-center justify-content-center top-0" >
+              <i class="ri-heart-fill fs-4 text-white"></i>
+            </div>
+          </div>
+
+          <div class="details-content col-8">
+            <h3 class="text-center text-capitalize">
+              {{ movie.title }}
+            </h3>
+
+            <p class="lead py-2">{{ movie.overview }}</p>
+            
+            <div class="rate d-inline-block rounded-2 py-1 px-3">
+              <span> <i class="ri-star-line"></i> <span>{{ movie.rating }}</span> </span>
+            </div>
+
+            <div>
+              <small>Type</small>
+              <p>Movie</p>
+            </div>
+
+            <div>
+              <small>Duration</small>
+              <p>180 mins</p>
+            </div>
+
+            <div>
+              <small>Genre</small>
+              <p>Action, Romance, Comedy</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock content %}

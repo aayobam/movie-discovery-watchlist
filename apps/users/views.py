@@ -20,9 +20,8 @@ class RegisterUserView(generic.CreateView):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         user_data = {
-            "first_name": request.POST.get("firstName"),
-            "last_name": request.POST.get("lastName"),
-            "phone_no": request.POST.get("phoneNumber"),
+            "first_name": request.POST.get("first-name"),
+            "last_name": request.POST.get("last-name"),
             "email": request.POST.get("email"),
             "password": request.POST.get("password"),
         }
@@ -32,17 +31,16 @@ class RegisterUserView(generic.CreateView):
 
         if not self.validate_email(email):
             messages.error(self.request, f"email: {email} already exist.")
-            return redirect("create_user")
+            return redirect("create_account")
 
         if not Validators.validate_password(user_data.get("password"), confirm_password):
             messages.error(
                 self.request, "password and confirm password do not match, please try again.")
-            return redirect("create_user")
+            return redirect("create_account")
 
-        if not Validators.validate_password_length(user_data.get("password")):
-            messages.error(
-                self.request, "password lenght cannot be less than 10, please try again.")
-            return redirect("create_user")
+        # if not Validators.validate_password_length(user_data.get("password")):
+        #     messages.error(self.request, "password lenght cannot be less than 10, please try again.")
+        #     return redirect("create_account")
 
         user: CustomUser = self.model.objects.create(**user_data)
         user.set_password(user_data.get("password"))
@@ -117,6 +115,10 @@ class UserLoginView(generic.TemplateView):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
+        if len(password) < 8:
+            messages.error(self.request, "password cannot be less than 8.")
+            return redirect("user_login")
+
         if not CustomUser.objects.filter(email=email).exists():
             messages.error(self.request, "Email does not exist.")
             return redirect("user_login")
@@ -157,7 +159,7 @@ class ChangePasswordView(LoginRequiredMixin, generic.TemplateView):
             return redirect("change_password")
 
         if len(new_password) < 8:
-            messages.warning(request, "password length should not be less than 10.")
+            messages.warning(request, "password length should not be less than 8.")
             return redirect("change_password")
 
         if old_password == new_password:
@@ -165,7 +167,7 @@ class ChangePasswordView(LoginRequiredMixin, generic.TemplateView):
             return redirect("change_password")
 
         if new_password != confirm_new_password:
-            messages.warning(request, "new_password1 and new_password2 do not match.")
+            messages.warning(request, "password and confirm password do not match.")
             return redirect("change_password")
 
         user.set_password(new_password)

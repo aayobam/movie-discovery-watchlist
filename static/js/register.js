@@ -1,22 +1,38 @@
 /* Form vaildation */
 
 const form = document.getElementById("reForm");
+const firstName = document.getElementById("first-name");
+const lastName = document.getElementById("last-name");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirm-password");
 // const form = document.getElementByid("form");
 
 form.addEventListener("submit", (e) => {
-  e.preventDefault();
-
+  e.preventDefault()
   checkInput();
 });
 
 function checkInput() {
   // get the values from the inputs
+  const firstNameValue = firstName.value.trim();
+  const lastNameValue = lastName.value.trim();
   const emailValue = email.value.trim();
   const passwordValue = password.value.trim();
   const confirmPasswordValue = confirmPassword.value.trim();
+
+
+  if (firstNameValue === "") {
+    setErrorFor(firstName, "first name cannot be blank");
+  } else {
+    setSuccessFor(firstName);
+  }
+
+  if (lastNameValue === "") {
+    setErrorFor(lastName, "last name cannot be blank");
+  } else {
+    setSuccessFor(lastName);
+  }
 
   if (emailValue === "") {
     setErrorFor(email, "Email cannot be blank");

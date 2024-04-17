@@ -3,6 +3,7 @@ import requests
 from django.db.models import Q
 from django.views import generic
 from django.shortcuts import render
+from apps.common.choices import TAGS
 from apps.movies.models import Movie
 from core.settings import API_BASE_URL, BEARER_TOKEN, MOVIE_BASE_URL
 
@@ -53,7 +54,7 @@ class MovieListView(generic.ListView):
     fields = '__all__'
     template_name = "index.html"
     context_object_name = 'movies'
-    paginate_by = 6
+    paginate_by = 8
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -75,3 +76,9 @@ class MovieListView(generic.ListView):
             return qs
 
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["movie_slides"] = self.get_queryset()[:5]
+        context["TAGS"] = TAGS
+        return context
