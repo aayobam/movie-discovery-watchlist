@@ -9,7 +9,7 @@ from core.settings import API_BASE_URL, BEARER_TOKEN, MOVIE_BASE_URL
 
 
 class FetchMoviewsFromTmdbApiView(generic.TemplateView):
-    template_name = "movie_list.html"
+    template_name = "api_response.html"
 
     def get(self, request):
         query_list = ['now_playing', 'popular', 'top_rated', 'upcoming']
@@ -24,8 +24,6 @@ class FetchMoviewsFromTmdbApiView(generic.TemplateView):
 
         response = requests.get(url=url, headers=headers)
         response_data = response.json().get("results", [])
-
-        print(f"\n--------- RESULTS: {response_data} -----------\n")
 
         for data in response_data:
             movie_data = {

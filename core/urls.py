@@ -7,6 +7,7 @@ from .import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.MovieListView.as_view(), name="home"),
+    path("fetch-movies", views.FetchMoviewsFromTmdbApiView.as_view(), name="fetch_movies"),
     path('movies/', include("apps.movies.urls")),
     path('users/', include("apps.users.urls")),
 ]
