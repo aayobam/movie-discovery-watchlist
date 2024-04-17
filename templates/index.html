@@ -2,142 +2,162 @@
 {% load static %}
 
 {% block content %}
-  <main>
-    <section class="trending py-4">
-      <div class="container-sm">
-        <div class="pb-2"><h1 class="text-center">Trending Now</h1></div>
-        <!-- swiper components -->
-        <div class="swiper mySwiper">
-          {% if movie_slides %}
-            <div class="swiper-wrapper">
-              {% for slide in  movie_slides %}
-                <div class="swiper-slide">
-                  <!-- card item -->
-                  <div class="card position-relative" style="width: 18rem">
-                    <a href="{% url "movie_detail" slide.id %}">
-                      <div class="card-img-wrapper">
-                        <img src="{{ slide.poster_path }}" class="card-img-top w-100 h-100" alt="..." />
-                      </div>
-                    </a>
-
-                    <div class="card-body">
-                      <h5 class="card-title fs-6 fw-bold">{{ slide.title }}</h5>
-                      <button class="custom-btn btn fw-bolder shadow">Add To Watch list</button>
-                    </div>
-                    <div class="position-absolute d-flex w-100 justify-content-end p-3" >
-                      <div class="fav rounded-pill d-flex align-items-center justify-content-center" >
-                        <i class="ri-heart-fill fs-4 text-white"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              {% endfor %}
-            </div>
-          {% else %}
-            <div class="pb-2"><h1 class="text-center">No movie to display.</h1></div>
-          {% endif %}
-        </div>
+<main>
+  <section class="trending py-4">
+    <div class="container-sm">
+      <div class="pb-2">
+        <h1 class="text-center">Trending Now</h1>
       </div>
-    </section>
+      <!-- swiper components -->
+      <div class="swiper mySwiper">
+        {% if movie_slides %}
+        <div class="swiper-wrapper">
+          {% for slide in movie_slides %}
+          <div class="swiper-slide">
+            <!-- card item -->
+            <div class="card position-relative" style="width: 18rem">
+              <a href="{% url "movie_detail" slide.id %}">
+                <div class="card-img-wrapper">
+                  <img src="{{ slide.poster_path }}" class="card-img-top w-100 h-100" alt="..." />
+                </div>
+              </a>
 
-    <section class="py-5 movie">
-      <div class="container-sm py-5">
-        <div class="row pb-4">
-          <form class="container-fluid col-6">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search by title..." aria-label="search" aria-describedby="basic-addon1" />
-              <span class="input-group-text fw-bold fs-3" id="basic-addon1">
-                <i class="ri-search-line"></i>
-              </span>
-            </div>
-          </form>
-            <!-- <div class="col-4"></div> -->
-          <div class="col-6 d-flex align-items-center justify-content-end">
-            <div class="col-6">
-              <select class="form-select" name="tags" aria-label="Default select example">
-                {% for value, label in TAGS %}
-                  <option value="{{ value }}">{{ label }}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="pb-3"><h1 class="text-center">All Movies And Series</h1></div>
-        {% if movies %}
-          <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
-            {% for movie in movies %}
-              <div class="col">
-                <!-- Card -->
-                <div class="card position-relative">
-                  <a href="{% url "movie_detail" movie.id %}">
-                    <div class="card-img-wrapper">
-                      <img src="{{ movie.poster_path }}" class="card-img-top w-100 h-100" alt="..." />
-                    </div>
-                  </a>
-
-                  <div class="card-body">
-                    <small>{{ movie.release_date }}</small>
-                    <h5 class="card-title fs-6 fw-bold">{{ movie.title }}</h5>
-                    <div></div>
-                    <button type="submit" class="custom-btn btn fw-bolder shadow">Add To Watch list</button>
-                  </div>
-
-                  <div class="position-absolute d-flex w-100 justify-content-end p-3" >
-                    <div class="fav1 rounded-pill d-flex align-items-center justify-content-center" >
-                      <i class="ri-heart-fill fs-4 text-white"></i>
-                    </div>
-                  </div>
+              <div class="card-body">
+                <h5 class="card-title fs-6 fw-bold">{{ slide.title }}</h5>
+                <button class="custom-btn btn fw-bolder shadow">Add To Watch list</button>
+              </div>
+              <div class="position-absolute d-flex w-100 justify-content-end p-3">
+                <div class="fav rounded-pill d-flex align-items-center justify-content-center">
+                  <i class="ri-heart-fill fs-4 text-white"></i>
                 </div>
               </div>
-            {% endfor %}
+            </div>
           </div>
+          {% endfor %}
+        </div>
         {% else %}
-          <div class="pb-3"><h1 class="text-center">No movie available</h1></div>
+        <div class="pb-2">
+          <h1 class="text-center">No movie to display.</h1>
+        </div>
         {% endif %}
-        
-        <!-- pagination -->
-        <nav aria-label="..." class="py-2">
-          <ul class="pagination">
-            {% if page_obj.has_previous %}
-              <li class="page-item">
-                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a>
-              </li>
-            {% else %}
-              <li class="page-item disabled">
-                <span class="page-link">Previous</span>
-              </li>
-            {% endif %}
-
-            <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
-
-            {% for num in page_obj.paginator.page_range %}
-                {% if num == page_obj.number %}
-                  <li class="page-item active" aria-current="page">
-                    <span class="page-link">{{ num }}</span>
-                  </li>
-                {% else %}
-                  <li class="page-item">
-                    <a href="?page={{ num }}" class="page-link">{{ num }}</a>
-                  </li>
-                {% endif %}
-            {% endfor %}
-
-            <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Last</a></li>
-
-            {% if page_obj.has_next %}
-                <li class="page-item">
-                  <a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                  <span class="page-link">Next</span>
-                </li>
-            {% endif %}
-          </ul>
-        </nav>
-
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+
+  <section class="py-5 movie">
+    <div class="container-sm py-5">
+      <div class="row pb-4">
+        <form class="container-fluid col-6" method="get">
+          <div class="input-group">
+            <input type="search" class="form-control" name="title" placeholder="Search by title..." aria-label="search"
+              aria-describedby="basic-addon1" />
+            <span class="input-group-text fw-bold fs-3" id="basic-addon1">
+              <i class="ri-search-line"></i>
+            </span>
+          </div>
+        </form>
+        <!-- <div class="col-4"></div> -->
+        <div class="col-6 d-flex align-items-center justify-content-end">
+          <div class="col-6">
+            <select class="form-select"
+              name="tags" 
+              aria-label="Default select example"
+              hx-get="{% url 'home' %}"
+              hx-trigger="change"
+              hx-target="#filter-result">
+
+              {% for value, label in TAGS %}
+                <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="pb-3">
+        <h1 class="text-center">All Movies And Series</h1>
+      </div>
+
+      <!-- movies result -->
+      <div id="filter-result">
+        {% include "partial/movie_result.html" %}
+      </div>
+      {% comment %} {% if movies %}
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+          {% for movie in movies %}
+          <div class="col">
+            <!-- Card -->
+            <div class="card position-relative">
+              <a href="{% url "movie_detail" movie.id %}">
+                <div class="card-img-wrapper">
+                  <img src="{{ movie.poster_path }}" class="card-img-top w-100 h-100" alt="..." />
+                </div>
+              </a>
+
+              <div class="card-body">
+                <small>{{ movie.release_date }}</small>
+                <h5 class="card-title fs-6 fw-bold">{{ movie.title }}</h5>
+                <div></div>
+                <button type="submit" class="custom-btn btn fw-bolder shadow">Add To Watch list</button>
+              </div>
+
+              <div class="position-absolute d-flex w-100 justify-content-end p-3">
+                <div class="fav1 rounded-pill d-flex align-items-center justify-content-center">
+                  <i class="ri-heart-fill fs-4 text-white"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="pb-3">
+          <h1 class="text-center">No movie available</h1>
+        </div>
+      {% endif %} {% endcomment %}
+
+      <!-- pagination -->
+      <nav aria-label="..." class="py-2">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+          </li>
+          {% endif %}
+
+          <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
+
+          {% for num in page_obj.paginator.page_range %}
+          {% if num == page_obj.number %}
+          <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ num }}</span>
+          </li>
+          {% else %}
+          <li class="page-item">
+            <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+
+          <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Last</a></li>
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">Next</span>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+
+    </div>
+  </section>
+</main>
 {% endblock content %}

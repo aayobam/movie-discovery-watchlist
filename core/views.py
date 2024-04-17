@@ -24,6 +24,7 @@ class FetchMoviewsFromTmdbApiView(generic.TemplateView):
 
         response = requests.get(url=url, headers=headers)
         response_data = response.json().get("results", [])
+        movie_list: list = []
 
         for data in response_data:
             movie_data = {
@@ -34,15 +35,19 @@ class FetchMoviewsFromTmdbApiView(generic.TemplateView):
                 "release_date": data["release_date"],
                 "rating": data["vote_average"]
             }
-            instance, created = Movie.objects.get_or_create(**movie_data)
-            if not created:
-                instance.title = movie_data["title"]
-                instance.overview = movie_data["overview"]
-                instance.poster_path = movie_data["poster_path"]
-                instance.release_date = movie_data["release_date"]
-                instance.rating = movie_data["rating"]
-                instance.tag = movie_data["tag"]
-                instance.save()
+            existing_movie = Movie.objects.filter(
+                title=movie_data["title"]).first()
+            if existing_movie:
+                existing_movie.title = movie_data["title"]
+                existing_movie.overview = movie_data["overview"]
+                existing_movie.poster_path = movie_data["poster_path"]
+                existing_movie.release_date = movie_data["release_date"]
+                existing_movie.rating = movie_data["rating"]
+                existing_movie.tag = movie_data["tag"]
+                existing_movie.save()
+            movie_instance = Movie(**movie_data)
+            movie_list.append(movie_instance)
+        Movie.objects.bulk_create(movie_list)
         context = {"response": response.text}
         return render(request, self.template_name, context)
 
@@ -56,7 +61,7 @@ class MovieListView(generic.ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        movie_tag_query = self.request.GET.get("tag")
+        movie_tag_query = self.request.GET.get("tags", "")
         movie_title_query = self.request.GET.get("title")
 
         if movie_title_query:
@@ -77,6 +82,6 @@ class MovieListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["movie_slides"] = self.get_queryset()[:5]
+        context["movie_slides"] = self.model.objects.all()[:5]
         context["TAGS"] = TAGS
         return context

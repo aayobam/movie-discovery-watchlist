@@ -1,0 +1,35 @@
+{% block content %}
+    {% if movies %}
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+          {% for movie in movies %}
+            <div class="col">
+                <!-- Card -->
+                <div class="card position-relative">
+                <a href="{% url "movie_detail" movie.id %}">
+                    <div class="card-img-wrapper">
+                    <img src="{{ movie.poster_path }}" class="card-img-top w-100 h-100" alt="..." />
+                    </div>
+                </a>
+
+                <div class="card-body">
+                    <small class="text-info">{{ movie.release_date }}</small>
+                    <h5 class="card-title text-info fs-6 fw-bold">{{ movie.title }}</h5>
+                    <div></div>
+                    <button type="submit" class="custom-btn btn fw-bolder shadow">Add To Watch list</button>
+                </div>
+
+                <div class="position-absolute d-flex w-100 justify-content-end p-3">
+                    <div class="fav1 rounded-pill d-flex align-items-center justify-content-center">
+                    <i class="ri-heart-fill fs-4 text-white"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+          {% endfor %}
+        </div>
+    {% else %}
+        <div class="pb-3">
+          <h1 class="text-center">No movie available</h1>
+        </div>
+    {% endif %}
+{% endblock content %}
