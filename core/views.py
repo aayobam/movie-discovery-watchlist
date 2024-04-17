@@ -16,16 +16,13 @@ class FetchMoviewsFromTmdbApiView(generic.TemplateView):
         movie_base_url = f"{API_BASE_URL}/movie/"
         movie_list_query = random.choice(query_list)
         url = f"{movie_base_url}{movie_list_query}"
-
         headers = {
             "Authorization": f"Bearer {BEARER_TOKEN}",
             "accept": "application/json"
         }
-
         response = requests.get(url=url, headers=headers)
         response_data = response.json().get("results", [])
         movie_list: list = []
-
         for data in response_data:
             movie_data = {
                 "title": data["title"],
@@ -35,21 +32,20 @@ class FetchMoviewsFromTmdbApiView(generic.TemplateView):
                 "release_date": data["release_date"],
                 "rating": data["vote_average"]
             }
-            existing_movie = Movie.objects.filter(
-                title=movie_data["title"]).first()
-            if existing_movie:
-                existing_movie.title = movie_data["title"]
-                existing_movie.overview = movie_data["overview"]
-                existing_movie.poster_path = movie_data["poster_path"]
-                existing_movie.release_date = movie_data["release_date"]
-                existing_movie.rating = movie_data["rating"]
-                existing_movie.tag = movie_data["tag"]
-                existing_movie.save()
+            instance = Movie.objects.filter(
+                title=movie_data.get("title")).first()
+            if instance:
+                self.patch_existing_movie(instance, movie_data)
             movie_instance = Movie(**movie_data)
             movie_list.append(movie_instance)
         Movie.objects.bulk_create(movie_list)
         context = {"response": response.text}
         return render(request, self.template_name, context)
+
+    def patch_existing_movie(self, instance, movie_data):
+        for key, value in movie_data.items():
+            setattr(instance, key, value)
+        instance.save()
 
 
 class MovieListView(generic.ListView):
