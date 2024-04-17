@@ -2,31 +2,36 @@ import random
 import requests
 from django.db.models import Q
 from django.views import generic
+from django.shortcuts import render
 from apps.movies.models import Movie
-from core.settings import BEARER_TOKEN, API_BASE_URL, MOVIE_BASE_URL
+from core.settings import API_BASE_URL, BEARER_TOKEN, MOVIE_BASE_URL
 
 
-class FetchMoviewsFromTmdbApiHandler:
-    def fetch_movies_from_api():
+class FetchMoviewsFromTmdbApiView(generic.TemplateView):
+    template_name = "movie_list.html"
+
+    def get(self, request):
         query_list = ['now_playing', 'popular', 'top_rated', 'upcoming']
-        api_base_url = f"{API_BASE_URL}movie/"
+        movie_base_url = f"{API_BASE_URL}/movie/"
         movie_list_query = random.choice(query_list)
-        url = f"{api_base_url}{movie_list_query}"
+        url = f"{movie_base_url}{movie_list_query}"
 
         headers = {
             "Authorization": f"Bearer {BEARER_TOKEN}",
             "accept": "application/json"
         }
 
-        response = requests.get(url, headers=headers)
+        response = requests.get(url=url, headers=headers)
         response_data = response.json().get("results", [])
+
+        print(f"\n--------- RESULTS: {response_data} -----------\n")
 
         for data in response_data:
             movie_data = {
                 "title": data["title"],
                 "tag": movie_list_query,
                 "overview": data["overview"],
-                "poster_path": f"{MOVIE_BASE_URL}w200{data['poster_path']}",
+                "poster_path": f"{MOVIE_BASE_URL}/w200{data['poster_path']}",
                 "release_date": data["release_date"],
                 "rating": data["vote_average"]
             }
@@ -39,13 +44,16 @@ class FetchMoviewsFromTmdbApiHandler:
                 instance.rating = movie_data["rating"]
                 instance.tag = movie_data["tag"]
                 instance.save()
+        context = {"response": response.text}
+        return render(request, self.template_name, context)
 
 
 class MovieListView(generic.ListView):
     model = Movie
     fields = '__all__'
-    template_name = "movies/movie_list.html"
+    template_name = "index.html"
     context_object_name = 'movies'
+    paginate_by = 6
 
     def get_queryset(self):
         queryset = super().get_queryset()

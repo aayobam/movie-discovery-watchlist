@@ -35,11 +35,13 @@ class RegisterUserView(generic.CreateView):
             return redirect("create_user")
 
         if not Validators.validate_password(user_data.get("password"), confirm_password):
-            messages.error(self.request, "password and confirm password do not match, please try again.")
+            messages.error(
+                self.request, "password and confirm password do not match, please try again.")
             return redirect("create_user")
 
         if not Validators.validate_password_length(user_data.get("password")):
-            messages.error(self.request, "password lenght cannot be less than 10, please try again.")
+            messages.error(
+                self.request, "password lenght cannot be less than 10, please try again.")
             return redirect("create_user")
 
         user: CustomUser = self.model.objects.create(**user_data)
@@ -74,9 +76,8 @@ class UserProfileView(LoginRequiredMixin, generic.UpdateView):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         user_data = {
-            "first_name": request.POST.get("firstName"),
-            "last_name": request.POST.get("lastName"),
-            "phone_no": request.POST.get("phoneNumber"),
+            "first_name": request.POST.get("first-name"),
+            "last_name": request.POST.get("last-name"),
             "email": request.POST.get("email"),
         }
 
@@ -145,9 +146,9 @@ class ChangePasswordView(LoginRequiredMixin, generic.TemplateView):
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):
-        old_password: str = request.POST.get("old_password")
-        new_password1: str = request.POST.get('new_password1')
-        new_password2: str = request.POST.get('new_password2')
+        old_password: str = request.POST.get("old-password")
+        new_password: str = request.POST.get('new-password')
+        confirm_new_password: str = request.POST.get('confirm-new-password')
 
         user: CustomUser = request.user
 
@@ -155,19 +156,19 @@ class ChangePasswordView(LoginRequiredMixin, generic.TemplateView):
             messages.warning(request, "old password doesn't match.")
             return redirect("change_password")
 
-        if len(new_password1) < 10:
+        if len(new_password) < 8:
             messages.warning(request, "password length should not be less than 10.")
             return redirect("change_password")
 
-        if old_password == new_password1:
+        if old_password == new_password:
             messages.warning(request, "your new password cannot be the same as your old password.")
             return redirect("change_password")
 
-        if new_password1 != new_password2:
+        if new_password != confirm_new_password:
             messages.warning(request, "new_password1 and new_password2 do not match.")
             return redirect("change_password")
 
-        user.set_password(new_password1)
+        user.set_password(new_password)
         user.save()
         update_session_auth_hash(request, user)
         messages.success(request, "password change successfull. your new password would take effect on next login.")

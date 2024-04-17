@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Remix Icon -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap  -->
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <!-- Swiper js -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
+    <link rel="stylesheet" href="./static/css/index.css" />
+
+    <title>MOFLIXX</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-sm">
+          <!-- Brand logo -->
+          <a
+            class="navbar-brand logo d-block text-uppercase d-lg-none fw-bold fs-4"
+            href="/"
+          >
+            Moflixx</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <a
+              class="navbar-brand d-none logo d-lg-block text-uppercase fw-bold fs-4 me-auto"
+              href="/"
+            >
+              Moflixx</a
+            >
+            <ul class="navbar-nav mb-2 fw-medium fs-5 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  aria-current="page"
+                  href="/index.html"
+                  ><i class="ri-film-fill fs-4"></i>Home</a
+                >
+              </li>
+
+              <li class="nav-item">
+                <a
+                  class="nav-link text-white text-black fw-medium py-2 px-4"
+                  href="/login.html"
+                >
+                  Sign In</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="overflow-hidden">
+        <div class="container-sm">
+          <!-- Show the user the trailer of the movie -->
+          <!-- -->
+          <div class="youtube-video-container my-4">
+            <!-- How to get the trailer video key from tmbd 
+            https://www.themoviedb.org/talk/5451ec02c3a3680245005e3c?page=4#5f6fc133f2cf25003a8dd6c3
+            in the src "https://www.youtube.com/embed/{kmJLuwP3MbY}" the  part that was enclose in curl brackets is going to unique
+           -->
+            <iframe
+              width="100%"
+              src="https://www.youtube-nocookie.com/embed/kmJLuwP3MbY"
+              frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <!-- Show the user the trailer of the movie end -->
+
+          <button class="custom-btn btn fw-bolder shadow mb-3">
+            Add To Watch list
+          </button>
+          <div
+            class="row g-5 details position-relative py-5 align-content-center"
+          >
+            <!-- background image here should be dynamic -->
+            <div
+              class="back-drop"
+              style="
+                background-image: url('https://image.tmdb.org/t/p/original//rKmp0vm6PNaFA0g1bzM70eyWJ6I.jpg');
+              "
+            ></div>
+            <div class="detail-img col-4 position-relative">
+              <img
+                src="./media/images/image-placeholder.jpg"
+                alt=""
+                class="img-fluid"
+              />
+              <div
+                class="fav position-absolute rounded-pill d-flex align-items-center justify-content-center top-0"
+              >
+                <i class="ri-heart-fill fs-4 text-white"></i>
+              </div>
+            </div>
+            <div class="details-content col-8">
+              <h3 class="text-center text-capitalize">
+                The Shawshank Redemption
+              </h3>
+              <p class="lead py-2">
+                Framed in the 1940s for the double murder of his wife and her
+                lover, upstanding banker Andy Dufresne begins a new life at the
+                Shawshank prison, where he puts his accounting skills to work
+                for an amoral warden. During his long stretch in prison,
+                Dufresne comes to be admired by the other inmates -- including
+                an older prisoner named Red -- for his integrity and
+                unquenchable sense of hope.
+              </p>
+              <div class="rate d-inline-block rounded-2 py-1 px-3">
+                <span> <i class="ri-star-line"></i> <span>8.6</span> </span>
+              </div>
+              <div>
+                <small>Type</small>
+                <p>Movie</p>
+              </div>
+              <div>
+                <small>Duration</small>
+                <p>180 mins</p>
+              </div>
+              <div>
+                <small>Genre</small>
+                <p>Action, Romance, Comedy</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- bootstrap js -->
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script src="./static/js/script.js"></script>
+  </body>
+</html>

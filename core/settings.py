@@ -15,7 +15,7 @@ import os
 import environ
 from django.urls import reverse_lazy
 from django.contrib.messages import constants as messages
-from celery.beat import crontab
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,7 +35,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -48,10 +48,17 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
-LOCAL_APPS = ["apps.users", "apps.movies",
-              "apps.watchlists", "apps.favorites",]
+LOCAL_APPS = [
+    "apps.users",
+    "apps.movies",
+    "apps.watchlists",
+    "apps.favorites",
+]
 
-THIRD_PARTY_APPS = ["django_celery_beat", "django_celery_results",]
+THIRD_PARTY_APPS = [
+    "django_celery_beat",
+    "django_celery_results"
+]
 
 INSTALLED_APPS += LOCAL_APPS + THIRD_PARTY_APPS
 
@@ -160,37 +167,35 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR / "static"),)
 MEDIA_ROOT = os.path.join(BASE_DIR / "media")
 
 # Redis configuration.
-REDIS_URL = env("REDIS_URL")
+# REDIS_URL = env("REDIS_URL")
 CELERY_BROKER_URL = env("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
 
 # Additional settings for Django Celery Beat
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # celery beat configuration.
 CELERY_BEAT_SCHEDULE = {
-    "fetch-movie-every-day-from-tmdb-at-6am": {
-        "task": "core.tasks.fetch_movies_from_tmdb_and_save_to_database_task",
+    "populate_movie_database_task": {
+        "task": "core.tasks.populate_movie_database_task",
         "schedule": crontab()
     },
-    # "fetch-movie-every-day-from-tmdb-at-6am": {
-    #     "task": "core.tasks.fetch_movies_from_tmdb_and_save_to_database_task",
+    # "populate-movie-database": {
+    #     "task": "core.tasks.fetch_movies_from_api_task",
     #     "schedule": crontab(minute=0, hour=6)
     # }
 }
 
 # Caching.
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": CELERY_RESULT_BACKEND,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": CELERY_RESULT_BACKEND,
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
 
 
 # Default primary key field type
@@ -203,5 +208,5 @@ AUTH_USER_MODEL = "users.CustomUser"
 # TMDB configuration
 API_KEY = env("TMDB_API_KEY")
 BEARER_TOKEN = env("TMDB_BEARER_TOKEN")
-API_BASE_URL = "https://api.themoviedb.org/3/"
-MOVIE_BASE_URL = "https://image.tmdb.org/t/p/"
+API_BASE_URL = "https://api.themoviedb.org/3"
+MOVIE_BASE_URL = "https://image.tmdb.org/t/p"

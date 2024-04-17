@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Remix Icon -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <!-- bootstrap icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <!-- font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap  -->
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <!-- Swiper js -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
+    <link rel="stylesheet" href="./static/css/index.css" />
+
+    <title>MOFLIXX</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-sm">
+          <!-- Brand logo -->
+          <a
+            class="navbar-brand logo d-block text-uppercase d-lg-none fw-bold fs-4"
+            href="/"
+          >
+            Moflixx</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <a
+              class="navbar-brand d-none logo d-lg-block text-uppercase fw-bold fs-4 me-auto"
+              href="/"
+            >
+              Moflixx</a
+            >
+            <ul class="navbar-nav mb-2 fw-medium fs-5 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link text-white text-black fw-medium py-2 px-4"
+                  href="/login.html"
+                >
+                  MovieLover</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="d-flex">
+      <!-- DASHBOARD SIDEBAR ON A LARGE SCREEN -->
+      <aside
+        class="col-2 border-end border-4 position-fixed z-2 d-none d-md-block"
+      >
+        <div class="overflow-y-auto h-100">
+          <nav
+            class="nav flex-column align-items-center justify-content-center"
+          >
+            <ul class="navbar-nav my-5">
+              <li class="nav-item fw-bold border-2 border-bottom pt-3">
+                <a
+                  class="nav-link d-flex flex-column align-items-center justify-content-center"
+                  href="/dashboard.html"
+                >
+                  <div>
+                    <i class="bi bi-speedometer2 fs-3"></i>
+                  </div>
+                  <span> Dashboard </span>
+                </a>
+              </li>
+              <li class="nav-item fw-bold border-2 border-bottom pt-3">
+                <a
+                  class="nav-link active d-flex flex-column align-items-center justify-content-center"
+                  aria-current="page"
+                  href="/watch-list.html"
+                >
+                  <div>
+                    <i class="bi bi-card-checklist fs-3"></i>
+                  </div>
+                  <span> Watch List </span>
+                </a>
+              </li>
+              <li class="nav-item fw-bold border-2 border-bottom pt-3">
+                <a
+                  class="nav-link d-flex flex-column align-items-center justify-content-center"
+                  href="/change-password.html"
+                >
+                  <div>
+                    <i class="bi bi-shield-lock-fill fs-3"></i>
+                  </div>
+                  <span> change password </span>
+                </a>
+              </li>
+              <li class="nav-item fw-bold border-2 border-bottom pt-3">
+                <a
+                  class="nav-link d-flex flex-column align-items-center justify-content-center"
+                  href="/favorite.html"
+                >
+                  <div>
+                    <i class="bi bi-heart-fill fs-3"></i>
+                  </div>
+                  <span> My Favorite </span>
+                </a>
+              </li>
+
+              <li
+                class="nav-item d-flex align-items-center justify-content-center fw-bold border-2 border-bottom pt-3"
+              >
+                <button
+                  class="nav-link d-flex flex-column align-items-center justify-content-center"
+                >
+                  <div>
+                    <i class="bi bi-box-arrow-right fs-3"></i>
+                  </div>
+                  <span> Log out </span>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+
+      <div class="col-2 d-none d-md-block"></div>
+
+      <div class="col-12 col-md-9 mx-auto password">
+        <!-- DASHBOARD SIDEBAR OFF CANVAS FOR SMALLER SCREEN -->
+
+        <div class="d-md-none col-6 col-sm-4 ms-2 my-2">
+          <button
+            class="rounded-4 fw-bold border py-2 px-3 border-white d-flex align-items-center gap-1"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasExample"
+            aria-controls="offcanvasExample"
+          >
+            <span>
+              <i class="bi bi-menu-button-wide fs-3"></i>
+            </span>
+            <span> Dashboard </span>
+          </button>
+        </div>
+
+        <!-- MOBILE DASHBOARD MENU -->
+        <div
+          class="offcanvas offcanvas-start d-md-none"
+          tabindex="-1"
+          id="offcanvasExample"
+          aria-labelledby="offcanvasExampleLabel"
+        >
+          <div class="offcanvas-header">
+            <!-- <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5> -->
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav
+              class="nav flex-column align-items-center justify-content-center"
+            >
+              <ul class="navbar-nav text-black my-5">
+                <li class="nav-item fw-bold border-2 border-bottom pt-3">
+                  <a
+                    class="nav-link active d-flex flex-column align-items-center justify-content-center"
+                    aria-current="page"
+                    href="/dashboard.html"
+                  >
+                    <div>
+                      <i class="bi bi-speedometer2 fs-3"></i>
+                    </div>
+                    <span> Dashboard </span>
+                  </a>
+                </li>
+                <li class="nav-item fw-bold border-2 border-bottom pt-3">
+                  <a
+                    class="nav-link d-flex flex-column align-items-center justify-content-center"
+                    href="/watch-list.html"
+                  >
+                    <div>
+                      <i class="bi bi-card-checklist fs-3"></i>
+                    </div>
+                    <span> Watch List </span>
+                  </a>
+                </li>
+                <li class="nav-item fw-bold border-2 border-bottom pt-3">
+                  <a
+                    class="nav-link d-flex flex-column align-items-center justify-content-center"
+                    href="/change-password.html"
+                  >
+                    <div>
+                      <i class="bi bi-shield-lock-fill fs-3"></i>
+                    </div>
+                    <span> change password </span>
+                  </a>
+                </li>
+                <li class="nav-item fw-bold border-2 border-bottom pt-3">
+                  <a
+                    class="nav-link d-flex flex-column align-items-center justify-content-center"
+                    href="/favorite.html"
+                  >
+                    <div>
+                      <i class="bi bi-heart-fill fs-3"></i>
+                    </div>
+                    <span> My Favorite </span>
+                  </a>
+                </li>
+
+                <li
+                  class="nav-item d-flex align-items-center justify-content-center fw-bold border-2 border-bottom pt-3"
+                >
+                  <button
+                    class="nav-link d-flex flex-column align-items-center justify-content-center"
+                  >
+                    <div>
+                      <i class="bi bi-box-arrow-right fs-3"></i>
+                    </div>
+                    <span> Log out </span>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- main content -->
+        <!-- main content -->
+        <div class="container-sm">
+          <div class="wrapper py-5">
+            <h2 class="text-center py-3">Your Watch List</h2>
+            <!-- Movie Watch list Card -->
+            <div
+              class="d-flex justify-content-between align-items-center border-bottom pb-3 position-relative mt-2"
+            >
+              <div class="img-card rounded overflow-hidden">
+                <img
+                  src="./media/images/image-placeholder.jpg"
+                  class="img-fluid"
+                  alt=""
+                />
+                <div
+                  class="fav position-absolute rounded-pill d-flex align-items-center justify-content-center top-0"
+                >
+                  <i class="ri-heart-fill fs-4 text-white"></i>
+                </div>
+              </div>
+
+              <div>
+                <small>2024-1-14</small>
+                <h5 class="card-title fs-6 fw-bold">
+                  The Shawshank Redemption
+                </h5>
+              </div>
+              <button class="custom-btn btn fw-bolder shadow">Remove</button>
+            </div>
+            <!-- Movie Watch list Card -->
+            <div
+              class="d-flex justify-content-between align-items-center border-bottom pb-3 position-relative mt-2"
+            >
+              <div class="img-card rounded overflow-hidden">
+                <img
+                  src="./media/images/image-placeholder.jpg"
+                  class="img-fluid"
+                  alt=""
+                />
+                <div
+                  class="fav position-absolute rounded-pill d-flex align-items-center justify-content-center top-0"
+                >
+                  <i class="ri-heart-fill fs-4 text-white"></i>
+                </div>
+              </div>
+
+              <div>
+                <small>2024-1-14</small>
+                <h5 class="card-title fs-6 fw-bold">
+                  The Shawshank Redemption
+                </h5>
+              </div>
+              <button class="custom-btn btn fw-bolder shadow">Remove</button>
+            </div>
+            <!-- Movie Watch list Card -->
+            <div
+              class="d-flex justify-content-between align-items-center border-bottom pb-3 position-relative mt-2"
+            >
+              <div class="img-card rounded overflow-hidden">
+                <img
+                  src="./media/images/image-placeholder.jpg"
+                  class="img-fluid"
+                  alt=""
+                />
+                <div
+                  class="fav position-absolute rounded-pill d-flex align-items-center justify-content-center top-0"
+                >
+                  <i class="ri-heart-fill fs-4 text-white"></i>
+                </div>
+              </div>
+
+              <div>
+                <small>2024-1-14</small>
+                <h5 class="card-title fs-6 fw-bold">
+                  The Shawshank Redemption
+                </h5>
+              </div>
+              <button class="custom-btn btn fw-bolder shadow">Remove</button>
+            </div>
+            <!-- Movie Watch list Card -->
+            <div
+              class="d-flex justify-content-between align-items-center border-bottom pb-3 position-relative mt-2"
+            >
+              <div class="img-card rounded overflow-hidden">
+                <img
+                  src="./media/images/image-placeholder.jpg"
+                  class="img-fluid"
+                  alt=""
+                />
+                <div
+                  class="fav position-absolute rounded-pill d-flex align-items-center justify-content-center top-0"
+                >
+                  <i class="ri-heart-fill fs-4 text-white"></i>
+                </div>
+              </div>
+
+              <div>
+                <small>2024-1-14</small>
+                <h5 class="card-title fs-6 fw-bold">
+                  The Shawshank Redemption
+                </h5>
+              </div>
+              <button class="custom-btn btn fw-bolder shadow">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Footer -->
+    <footer class="main-footer py-5">
+      <div class="container-sm">
+        <div class="d-flex justify-content-between">
+          <div class="logo">
+            <span class="fw-semibold fw-medium fs-4">MOFLIXX</span>
+          </div>
+          <div class="social-links d-flex gap-4">
+            <a
+              href="https://www.facebook.com"
+              class="text-white text-decoration-none"
+              target="_blank"
+              ><i class="ri-facebook-fill fs-3"></i>
+            </a>
+            <a
+              href="https://www.twitter.com"
+              class="text-white text-decoration-none"
+              target="_blank"
+              ><i class="ri-twitter-fill fs-3"></i>
+            </a>
+            <a
+              href="https://www.instagram.com"
+              class="text-white text-decoration-none"
+              target="_blank"
+              ><i class="ri-instagram-fill fs-3"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="container-sm">
+        <p>
+          &copy; 2024 <span class="special fw-medium fs-5">MOFLIXX</span>. All
+          rights reserved.
+        </p>
+      </div>
+    </footer>
+    <!-- bootstrap js -->
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- Initialize Swiper -->
+    <script src="./static/js/swiper.js"></script>
+    <script src="./static/js/script.js"></script>
+  </body>
+</html>

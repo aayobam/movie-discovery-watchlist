@@ -1,11 +1,122 @@
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>movie app</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <!-- bootstrap icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet" />
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" href="{% static "./bootstrap/css/bootstrap.min.css" %}" />
+    <!-- Swiper js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{% static "./css/index.css" %}" />
+    <title>MOFLIXX</title>
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-sm">
+            <!-- Brand logo -->
+            <a class="navbar-brand logo d-block text-uppercase d-lg-none fw-bold fs-4" href="{% url "home" %}">Moflixx</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <a class="navbar-brand d-none logo d-lg-block text-uppercase fw-bold fs-4 me-auto" href="{% url "home" %}" >Moflixx</a>
+                <ul class="navbar-nav mb-2 fw-medium fs-5 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url "home" %}" ><i class="ri-film-fill fs-4"></i>Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white text-black fw-medium py-2 px-4" href="{% url "user_login" %}">Sign In</a>
+                </li>
+                </ul>
+            </div>
+        </div>
+      </nav>
+    </header>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="container text-center mt-5" style="max-width: 600px;" id="alert">
+          {% if message.tags == "warning" %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible show" role="alert">
+              <i class="icon fa fa-exclamation-triangle"></i>
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="True">&times;</span>
+              </button>
+            </div>
+          {% else %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="True">&times;</span>
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
     {% block content %}{% endblock content %}
-</body>
+
+    <!-- Footer -->
+    <footer class="main-footer py-5">
+      <div class="container-sm">
+        <div class="d-flex justify-content-between">
+          <div class="logo">
+            <span class="fw-semibold fw-medium fs-4">MOFLIXX</span>
+          </div>
+          <div class="social-links d-flex gap-4">
+            <a
+              href="https://www.facebook.com"
+              class="text-white text-decoration-none"
+              target="_blank"
+              ><i class="ri-facebook-fill fs-3"></i>
+            </a>
+            <a
+              href="https://www.twitter.com"
+              class="text-white text-decoration-none"
+              target="_blank"
+              ><i class="ri-twitter-fill fs-3"></i>
+            </a>
+            <a
+              href="https://www.instagram.com"
+              class="text-white text-decoration-none"
+              target="_blank"
+              ><i class="ri-instagram-fill fs-3"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="container-sm">
+        <p>
+          &copy; 2024 <span class="special fw-medium fs-5">MOFLIXX</span>. All
+          rights reserved.
+        </p>
+      </div>
+    </footer>
+    <!-- bootstrap js -->
+    <script src="{% static "./bootstrap/js/bootstrap.min.js" %}"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+
+    <script src="./static/js/swiper.js"></script>
+    <script src="./static/js/script.js"></script>
+  </body>
 </html>

@@ -3,7 +3,7 @@ from .import views
 
 
 urlpatterns = [
-    path('create-users', views.RegisterUserView.as_view(), name="create_user"),
+    path('create-users', views.RegisterUserView.as_view(), name="create_account"),
     path('user-profile', views.UserProfileView.as_view(), name="user_profile"),
     path('<str:id>/delete-user', views.DeleteUserView.as_view(), name="delete_profile"),
     path('user-login', views.UserLoginView.as_view(), name="user_login"),

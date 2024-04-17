@@ -6,7 +6,7 @@ from .import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('movie-list/', views.MovieListView.as_view(), name="movie_list"),
+    path('', views.MovieListView.as_view(), name="home"),
     path('movies/', include("apps.movies.urls")),
     path('users/', include("apps.users.urls")),
 ]

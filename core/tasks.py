@@ -1,9 +1,9 @@
-from celery import shared_task
-from .views import FetchMoviewsFromTmdbApiHandler
+from core.celery import APP
+from apps.common.handler import FetchMovieHandler
 
 
-@shared_task
-def fetch_movies_from_tmdb_and_save_to_database_task():
-    movie_handler = FetchMoviewsFromTmdbApiHandler()
-    movie_handler.fetch_movies_from_api()
-    return "movies fetched successfully."
+@APP.task
+def seed_movie_to_db_task():
+    handler = FetchMovieHandler()
+    handler.populate_movie_database_task()
+    return "task completed."
