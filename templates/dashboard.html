@@ -22,15 +22,15 @@
       <nav class="navbar navbar-expand-lg">
         <div class="container-sm">
           <!-- Brand logo -->
-          <a class="navbar-brand logo d-block text-uppercase d-lg-none fw-bold fs-4" href="/">Moflixx<a>
+          <a class="navbar-brand logo d-block text-uppercase d-lg-none fw-bold fs-4" href="{% url "home" %}">Moflixx<a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand d-none logo d-lg-block text-uppercase fw-bold fs-4 me-auto" href="/" >Moflixx</a>
+            <a class="navbar-brand d-none logo d-lg-block text-uppercase fw-bold fs-4 me-auto" href="{% url "home" %}" >Moflixx</a>
             <ul class="navbar-nav mb-2 fw-medium fs-5 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link text-white text-black fw-medium py-2 px-4" href="/login.html" >MovieLover</a>
+                <a class="nav-link text-white text-black fw-medium py-2 px-4">{{ user.get_full_name }}</a>
               </li>
             </ul>
           </div>

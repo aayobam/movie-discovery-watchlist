@@ -53,6 +53,7 @@ class DeleteWatchListView(LoginRequiredMixin, generic.DeleteView):
 
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
+        title: str = instance.movie.title
         instance.delete()
-        messages.success(request, "movie removed from watchlist.")
+        messages.success(request, f"{title.upper()} removed from watchlist.")
         return redirect("watchlist")

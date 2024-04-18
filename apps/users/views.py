@@ -108,7 +108,6 @@ class DeleteUserView(LoginRequiredMixin, generic.DeleteView):
 class UserLoginView(generic.TemplateView):
     model = CustomUser
     template_name = "users/login.html"
-    success_url = reverse_lazy('user_profile')
 
     @transaction.atomic
     def post(self, request):
@@ -159,19 +158,23 @@ class ChangePasswordView(LoginRequiredMixin, generic.TemplateView):
             return redirect("change_password")
 
         if len(new_password) < 8:
-            messages.warning(request, "password length should not be less than 8.")
+            messages.warning(
+                request, "password length should not be less than 8.")
             return redirect("change_password")
 
         if old_password == new_password:
-            messages.warning(request, "your new password cannot be the same as your old password.")
+            messages.warning(
+                request, "your new password cannot be the same as your old password.")
             return redirect("change_password")
 
         if new_password != confirm_new_password:
-            messages.warning(request, "password and confirm password do not match.")
+            messages.warning(
+                request, "password and confirm password do not match.")
             return redirect("change_password")
 
         user.set_password(new_password)
         user.save()
         update_session_auth_hash(request, user)
-        messages.success(request, "password change successfull. your new password would take effect on next login.")
+        messages.success(
+            request, "password change successfull. your new password would take effect on next login.")
         return redirect("user_profile")

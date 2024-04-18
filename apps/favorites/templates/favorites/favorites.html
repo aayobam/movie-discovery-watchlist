@@ -1,0 +1,29 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block content %}
+  <main class="d-flex">
+    <div class="col-12 col-md-9 mx-auto password">
+      <!-- main content -->
+      <div class="container-sm">
+        <div class="wrapper py-5">
+          <h2 class="text-center py-3">Your Favorite Movies</h2>
+          {% for favorite in favorites %}
+          <!-- Favorite Movie Card -->
+          <div class="d-flex justify-content-between align-items-center border-bottom pb-3 position-relative mt-2" >
+            <div class="img-card rounded overflow-hidden">
+              <img src="{{ favorite.movie.poster_path }}" class="img-fluid" alt=""/>
+            </div>
+
+            <div>
+              <small>{{ favorite.movie.release_date }}</small>
+              <h5 class="card-title fs-6 fw-bold">{{ favorite.movie.title }}</h5>
+            </div>
+            <a href="{% url "remove_from_favorites" favorite.id %}" class="custom-btn btn fw-bolder shadow">Remove</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock content %}
