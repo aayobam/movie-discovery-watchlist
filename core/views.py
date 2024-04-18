@@ -1,4 +1,5 @@
 import random
+from django.db.models.query import QuerySet
 import requests
 from django.db.models import Q
 from django.views import generic
@@ -31,7 +32,8 @@ class FetchMoviewsFromTmdbApiView(generic.TemplateView):
                 "release_date": data["release_date"],
                 "rating": data["vote_average"]
             }
-            instance = Movie.objects.filter(title=movie_data.get("title")).first()
+            instance = Movie.objects.filter(
+                title=movie_data.get("title")).first()
             if instance:
                 self.patch_existing_movie(instance, movie_data)
             Movie.objects.get_or_create(**movie_data)
@@ -64,12 +66,6 @@ class MovieListView(generic.ListView):
             qs = queryset.filter(tag__iexact=movie_tag_query)
             return qs
 
-        if movie_title_query and movie_tag_query:
-            chained_qs = Q(title__iexact=movie_title_query) & Q(
-                tag__iexact=movie_tag_query)
-            qs = queryset.filter(chained_qs)
-            return qs
-
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -77,3 +73,19 @@ class MovieListView(generic.ListView):
         context["movie_slides"] = self.model.objects.all()[:5]
         context["TAGS"] = TAGS
         return context
+
+
+class MovieFilterResultView(generic.ListView):
+    model = Movie
+    fields = "__all__"
+    context_object_name = "movies"
+    template_name = "partial/movie_result.html"
+    paginate_by = 8
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        movie_tag_query = self.request.GET.get("tags", "")
+        if movie_tag_query:
+            qs = queryset.filter(tag__iexact=movie_tag_query)
+            return qs
+        return queryset

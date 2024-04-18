@@ -66,7 +66,7 @@
               <select class="form-select"
                 name="tags" 
                 aria-label="Default select example"
-                hx-get="{% url 'home' %}"
+                hx-get="{% url 'filtered_movie_result' %}"
                 hx-trigger="change"
                 hx-target="#filter-result">
 
@@ -86,48 +86,6 @@
         <div id="filter-result">
           {% include "partial/movie_result.html" %}
         </div>
-
-        <!-- pagination -->
-        <nav aria-label="..." class="py-2">
-          <ul class="pagination">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-              <a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a>
-            </li>
-            {% else %}
-            <li class="page-item disabled">
-              <span class="page-link">Previous</span>
-            </li>
-            {% endif %}
-
-            <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
-
-            {% for num in page_obj.paginator.page_range %}
-            {% if num == page_obj.number %}
-            <li class="page-item active" aria-current="page">
-              <span class="page-link">{{ num }}</span>
-            </li>
-            {% else %}
-            <li class="page-item">
-              <a href="?page={{ num }}" class="page-link">{{ num }}</a>
-            </li>
-            {% endif %}
-            {% endfor %}
-
-            <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Last</a></li>
-
-            {% if page_obj.has_next %}
-            <li class="page-item">
-              <a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a>
-            </li>
-            {% else %}
-            <li class="page-item disabled">
-              <span class="page-link">Next</span>
-            </li>
-            {% endif %}
-          </ul>
-        </nav>
-
       </div>
     </section>
   </main>

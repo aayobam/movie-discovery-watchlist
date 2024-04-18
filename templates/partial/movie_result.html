@@ -1,37 +1,78 @@
 {% block content %}
     {% if movies %}
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
-          {% for movie in movies %}
-            <div class="col">
-                <!-- Card -->
-                <div class="card position-relative">
-                    <a href="{% url "movie_detail" movie.id %}">
-                        <div class="card-img-wrapper">
-                            <img src="{{ movie.poster_path }}" class="card-img-top w-100 h-100" alt="..." />
+            {% for movie in movies %}
+                <div class="col">
+                    <!-- Card -->
+                    <div class="card position-relative">
+                        <a href="{% url "movie_detail" movie.id %}">
+                            <div class="card-img-wrapper">
+                                <img src="{{ movie.poster_path }}" class="card-img-top w-100 h-100" alt="..." />
+                            </div>
+                        </a>
+
+                        <div class="card-body">
+                            <small class="text-info">Release Date: {{ movie.release_date }}</small>
+                            <h5 class="card-title text-info fs-6 fw-bold">Title: {{ movie.title }}</h5>
+                            <div></div>
+
+                            <form action="{% url "add_to_watchlist" %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                <button type="submit" class="custom-btn btn fw-bolder shadow">Add To Watchlist</button>
+                            </form>
                         </div>
-                    </a>
 
-                    <div class="card-body">
-                        <small class="text-info">Release Date: {{ movie.release_date }}</small>
-                        <h5 class="card-title text-info fs-6 fw-bold">Title: {{ movie.title }}</h5>
-                        <div></div>
-
-                        <form action="{% url "add_to_watchlist" %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                            <button type="submit" class="custom-btn btn fw-bolder shadow">Add To Watchlist</button>
-                        </form>
-                    </div>
-
-                    <div class="position-absolute d-flex w-100 justify-content-end p-3">
-                        <div class="fav1 rounded-pill d-flex align-items-center justify-content-center">
-                        <i class="ri-heart-fill fs-4 text-white"></i>
+                        <div class="position-absolute d-flex w-100 justify-content-end p-3">
+                            <div class="fav1 rounded-pill d-flex align-items-center justify-content-center">
+                            <i class="ri-heart-fill fs-4 text-white"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-          {% endfor %}
+            {% endfor %}
         </div>
+        <!-- pagination -->
+        <nav aria-label="..." class="py-2">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}" class="page-link">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                {% endif %}
+
+                <li class="page-item"><a href="?page=1{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}" class="page-link">First</a></li>
+
+                {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ num }}</span>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a href="?page={{ num }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}" class="page-link">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+                <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}" class="page-link">Last</a></li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                       <a href="?page={{ page_obj.next_page_number }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}" class="page-link">Next</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <!-- end of pagination -->
     {% else %}
         <div class="pb-3">
           <h1 class="text-center">No movie available</h1>

@@ -38,21 +38,12 @@
               <a class="navbar-brand d-none logo d-lg-block text-uppercase fw-bold fs-4 me-auto" href="{% url "home" %}" >Moflixx</a>
               <ul class="navbar-nav mb-2 fw-medium fs-5 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{% url "home" %}" ><i class="ri-film-fill fs-4"></i>Home</a>
+                    <a class="nav-link active" aria-current="page" href="{% url "home" %}" ><i class="ri-film-fill fs-4"></i>Home</a>
                 </li>
-                {% if user.is_authenticated %}
-                  <li class="nav-item">
-                    <a class="nav-link text-white text-black fw-medium py-2 px-4">Welcome, {{ user.get_full_name }}</a>
-                  </li>
 
-                 <li class="nav-item">
-                    <a class="nav-link text-white text-black fw-medium py-2 px-4" href="{% url "user_logout" %}">Sing Out</a>
-                  </li>
-                {% else %}
-                  <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link text-white text-black fw-medium py-2 px-4" href="{% url "user_login" %}">Sign In</a>
-                  </li>
-                {% endif %}
+                </li>
               </ul>
             </div>
         </div>
