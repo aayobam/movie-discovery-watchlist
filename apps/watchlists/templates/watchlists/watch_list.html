@@ -1,0 +1,75 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block content %}
+  <main class="d-flex">
+    <div class="col-12 col-md-9 mx-auto password">
+      <!-- main content -->
+      <div class="container-sm">
+        <h2 class="text-center py-3 mt-5">Your Watch List</h2>
+        {% if watchlists %}
+          <div class="wrapper py-5">
+            {% for watchlist in watchlists %}
+            <!-- Movie Watch list Card -->
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 position-relative mt-2" >
+              <div class="img-card rounded overflow-hidden">
+                <img src="{{ watchlist.movie.poster_path }}" class="img-fluid" alt="" />
+              </div>
+
+              <div>
+                <small>{{ watchlist.movie.release_date }}</small>
+                <h5 class="card-title fs-6 fw-bold">{{ watchlist.movie.title }}</h5>
+              </div>
+              <a href="{% url "remove_from_watchlist" watchlist.id %}" class="custom-btn btn fw-bolder shadow">Remove</a>
+            </div>
+            {% endfor %}
+            
+            <!-- pagination -->
+            <nav aria-label="..." class="py-2 align-items-center">
+              <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">Previous</span>
+                </li>
+                {% endif %}
+
+                <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                <li class="page-item active" aria-current="page">
+                  <span class="page-link">{{ num }}</span>
+                </li>
+                {% else %}
+                <li class="page-item">
+                  <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Last</a></li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                  <a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">Next</span>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        {% else %}
+          <h4 class="text-center py-3">you haven't added any movie to your watchlist.</h4>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+{% endblock content %}
+

@@ -22,7 +22,12 @@
         </div>
         <!-- Show the user the trailer of the movie end -->
 
-        <button class="custom-btn btn fw-bolder shadow mb-3">Add To Watch list</button>
+        
+        <form action="{% url "add_to_watchlist" %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="movie_id" value="{{ movie.id }}">
+          <button type="submit" class="custom-btn btn fw-bolder shadow mb-3">Add To Watch list</button>
+        </form>
         <div class="row g-5 details position-relative py-5 align-content-center" >
           <!-- background image here should be dynamic -->
           <div class="back-drop" style="background-image: url('https://image.tmdb.org/t/p/original//rKmp0vm6PNaFA0g1bzM70eyWJ6I.jpg');">

@@ -10,6 +10,8 @@ urlpatterns = [
     path("fetch-movies", views.FetchMoviewsFromTmdbApiView.as_view(), name="fetch_movies"),
     path('movies/', include("apps.movies.urls")),
     path('users/', include("apps.users.urls")),
+    path("watchlist/", include("apps.watchlists.urls")),
+    path("favorites/", include("apps.favorites.urls"))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
