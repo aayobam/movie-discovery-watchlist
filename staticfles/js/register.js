@@ -1,6 +1,8 @@
 /* Form vaildation */
 
 const form = document.getElementById("reForm");
+const firstName = document.getElementById("first-name");
+const lastName = document.getElementById("last-name");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirm-password");
@@ -12,9 +14,24 @@ form.addEventListener("submit", (e) => {
 
 function checkInput() {
   // get the values from the inputs
+  const firstNameValue = firstName.value.trim();
+  const lastNameValue = lastName.value.trim();
   const emailValue = email.value.trim();
   const passwordValue = password.value.trim();
   const confirmPasswordValue = confirmPassword.value.trim();
+
+
+  if (firstNameValue === "") {
+    setErrorFor(firstName, "first name cannot be blank");
+  } else {
+    setSuccessFor(firstName);
+  }
+
+  if (lastNameValue === "") {
+    setErrorFor(lastName, "last name cannot be blank");
+  } else {
+    setSuccessFor(lastName);
+  }
 
   if (emailValue === "") {
     setErrorFor(email, "Email cannot be blank");
@@ -26,7 +43,7 @@ function checkInput() {
   if (passwordValue === "") {
     // show error border color
     setErrorFor(password, "Password cannot be blank");
-  } else if (passwordValue.length !== 8) {
+  } else if (passwordValue.length < 8) {
     setErrorFor(password, "Password must be up to eight characters !");
   } else {
     setSuccessFor(password);

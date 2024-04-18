@@ -24,12 +24,10 @@ class AddToWatchListView(LoginRequiredMixin, generic.CreateView):
             }
             instance = self.model.objects.all()
             if instance.filter(movie__title=movie_obj.title).exists():
-                messages.info(
-                    request, f"{movie_obj.title.upper()} already exist in your watchlist.")
+                messages.info(request, f"{movie_obj.title.upper()} already exist in your watchlist.")
                 return redirect("home")
             instance.create(**movie_data)
-            messages.success(
-                request, f"{movie_obj.title.upper()} added to watchlist.")
+            messages.success(request, f"{movie_obj.title.upper()} added to watchlist.")
             return redirect("home")
         messages.error(request, "cannot add movie  to watchlist.")
         return redirect("home")

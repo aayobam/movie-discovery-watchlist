@@ -9,7 +9,6 @@ const confirmPassword = document.getElementById("confirm-password");
 // const form = document.getElementByid("form");
 
 form.addEventListener("submit", (e) => {
-  e.preventDefault()
   checkInput();
 });
 
@@ -44,7 +43,7 @@ function checkInput() {
   if (passwordValue === "") {
     // show error border color
     setErrorFor(password, "Password cannot be blank");
-  } else if (passwordValue.length !== 8) {
+  } else if (passwordValue.length < 8) {
     setErrorFor(password, "Password must be up to eight characters !");
   } else {
     setSuccessFor(password);

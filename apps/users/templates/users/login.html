@@ -25,6 +25,10 @@
           </div>
           <p class="no-acc mt-1"><a href="/password-rest.html">Forget Password</a></p>
 
+          {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{request.GET.next}}">
+          {% endif %}
+
           <button type="submit" class="justify-content-center btn w-100 mt-3 d-flex align-items-center fw-bolder shadow custom-btn" >
             <span class="text-white">Sign In</span>
           </button>
@@ -38,7 +42,7 @@
   </main>
 {% endblock content %}
 
-{% block customjs %}
+{% comment %} {% block customjs %}
   <script src="{% static "./js/login.js" %}"></script>
-{% endblock customjs %}
+{% endblock customjs %} {% endcomment %}
 

@@ -1,11 +1,9 @@
 const form = document.getElementById("change-password");
 const newPassword = document.getElementById("new-password");
-const password = document.getElementById("password");
-const confirmPassword = document.getElementById("confirm-password");
+const password = document.getElementById("old-password");
+const confirmPassword = document.getElementById("confirm-new-password");
 
 form.addEventListener("submit", (e) => {
-  e.preventDefault();
-
   checkInput();
 });
 
@@ -27,7 +25,7 @@ function checkInput() {
   if (newPasswordValue === "") {
     // show error border color
     setErrorFor(newPassword, "Password cannot be blank");
-  } else if (newPasswordValue.length !== 8) {
+  } else if (newPasswordValue.length < 8) {
     setErrorFor(newPassword, "Password must be up to eight characters !");
   } else {
     setSuccessFor(newPassword);
