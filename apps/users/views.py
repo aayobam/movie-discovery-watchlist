@@ -127,6 +127,7 @@ class UserLoginView(generic.TemplateView):
         if user is not None:
             login(request, user)
             if "next" in request.POST:
+                messages.success(request, f"Login successful.")
                 return redirect(request.POST.get("next"))
             return redirect("user_profile")
 

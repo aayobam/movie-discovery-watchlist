@@ -15,7 +15,7 @@ import os
 import environ
 from django.urls import reverse_lazy
 from django.contrib.messages import constants as messages
-from celery.schedules import crontab
+# from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,8 +56,9 @@ LOCAL_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    "django_celery_beat",
-    "django_celery_results"
+    "django_apscheduler",
+    # "django_celery_beat",
+    # "django_celery_results"
 ]
 
 INSTALLED_APPS += LOCAL_APPS + THIRD_PARTY_APPS
@@ -168,18 +169,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR / "media")
 
 # Redis configuration.
 # REDIS_URL = env("REDIS_URL")
-CELERY_BROKER_URL = env("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
+# CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+# CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
 
 # Additional settings for Django Celery Beat
 # CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # celery beat configuration.
 CELERY_BEAT_SCHEDULE = {
-    "populate_movie_database_task": {
-        "task": "core.tasks.populate_movie_database_task",
-        "schedule": crontab()
-    },
+    # "populate_movie_database_task": {
+    #     "task": "core.tasks.populate_movie_database_task",
+    #     "schedule": crontab()
+    # },
     # "populate-movie-database": {
     #     "task": "core.tasks.fetch_movies_from_api_task",
     #     "schedule": crontab(minute=0, hour=6)

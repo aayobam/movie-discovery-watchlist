@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from django.views import generic
+from django.db import transaction
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.favorites.models import Favorite
 from apps.movies.models import Movie
@@ -8,20 +9,22 @@ from apps.movies.models import Movie
 
 class AddToFavoriteView(LoginRequiredMixin, generic.CreateView):
     model = Favorite
-    fields = '__all__'
-    pk_url_kwarg = "id"
 
-    def post(self, request, *args, **kwargs):
-        movie_id = self.kwargs.get("movie_id")
+    @transaction.atomic
+    def get(self, request, *args, **kwargs):
+        movie_id = request.GET.get("movie_id")
         movie_obj = get_object_or_404(Movie, id=movie_id)
         if movie_obj is not None:
-            instance: Favorite = self.model.objects.create(
-                movie__id=movie_obj.id, user=request.user)
-            instance.save()
-            messages.success(request, "movie added to favorites.")
-            return redirect("favorites")
-        messages.error(request, "cannot add movie  as favorite.")
-        return redirect("favorites")
+            movie_data = {"user": request.user, "movie_id": movie_obj.id}
+            instance = self.model.objects.all()
+            if instance.filter(movie__title=movie_obj.title).exists():
+                messages.info(request, f"{movie_obj.title.upper()} already exist in your favorites.")
+                return redirect("home")
+            instance.create(**movie_data)
+            messages.success(request, f"{movie_obj.title.upper()} added to favorites.")
+            return redirect("home")
+        messages.error(request, "cannot add movie to favorites.")
+        return redirect("home")
 
 
 class FavoriteListView(LoginRequiredMixin, generic.ListView):

@@ -18,6 +18,12 @@ a {
   color: #020d18;
 }
 
+.form-select {
+  color: white;
+  font-weight: 600;
+  background-color: var(--color-secondary);
+}
+
 /* navbar customization */
 .navbar-brand,
 .navbar-brand:hover {
@@ -76,8 +82,9 @@ a {
 .fav {
   width: 30px;
   height: 30px;
-  background-color: rgba(0, 0, 0, 0.7);
-  cursor: pointer;
+  background-color: rgba(0, 0, 0);
+  outline: none;
+  border: none;
 }
 
 .card-body {
