@@ -7,6 +7,6 @@ class Validators:
 
     @staticmethod
     def validate_password_length(password: str):
-        if len(password) >= 10:
+        if len(password) >= 8:
             return True
         return False

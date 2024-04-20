@@ -11,7 +11,7 @@ class Favorite(BaseModel):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
-        return self.movie.title
+        return self.movie.title if self.movie.title else None
 
     def get_absolute_url(self):
         return reverse("favorite_detail", kwargs={"id": self.id})

@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from apps.favorites.models import Favorite
 from apps.movies.models import Movie
 from django.shortcuts import get_object_or_404, redirect
-
 from apps.watchlists.models import WatchList
 
 
@@ -21,7 +20,7 @@ class MovieDetailView(generic.DetailView):
     def post(self, request, *args, **kwargs):
         if 'add_to_watchlist' in request.POST:
             return self.add_to_watchlist(request)
-        elif 'add_to_favorites' in request.POST:
+        elif 'add_to_favorite' in request.POST:
             return self.add_to_favorites(request)
         else:
             return super().get(request)
@@ -32,12 +31,15 @@ class MovieDetailView(generic.DetailView):
         if request.method == "POST":
             movie_id = request.POST.get("movie_id")
             movie_obj = get_object_or_404(Movie, id=movie_id)
-            watchlist_qs = WatchList.objects.filter(user=self.request.user, movie=movie_obj)
-            if watchlist_qs.exists():
-                messages.info(request, f"{movie_obj.title.upper()} already exists in your watchlist.")
+            if movie_obj is not None:
+                watchlist_qs = WatchList.objects.filter(user=self.request.user, movie=movie_obj)
+                if watchlist_qs.exists():
+                    messages.info(request, f"{movie_obj.title.upper()} already exists in your watchlist.")
+                    return redirect("movie_detail", movie_obj.id)
+                WatchList.objects.create(user=request.user, movie=movie_obj)
+                messages.success(request, f"{movie_obj.title.upper()} added to watchlist.")
                 return redirect("movie_detail", movie_obj.id)
-            WatchList.objects.create(user=request.user, movie=movie_obj)
-            messages.success(request, f"{movie_obj.title.upper()} added to watchlist.")
+            messages.error(request, "movie not found.")
             return redirect("movie_detail", movie_obj.id)
 
     @transaction.atomic
@@ -46,10 +48,13 @@ class MovieDetailView(generic.DetailView):
         if request.method == "POST":
             movie_id = request.POST.get("movie_id")
             movie_obj = get_object_or_404(Movie, id=movie_id)
-            favorites_qs = Favorite.objects.filter(user=self.request.user, movie=movie_obj)
-            if favorites_qs.exists():
-                messages.info(request, f"{movie_obj.title.upper()} already exists in your favorites.")
-                return redirect("movie_detail", movie_obj.id)
-            Favorite.objects.create(user=request.user, movie=movie_obj)
-            messages.success(request, f"{movie_obj.title.upper()} added to favorites.")
-            return redirect("movie_detail", movie_obj)
+            if movie_obj is not None:
+                favorites_qs = Favorite.objects.filter(user=self.request.user, movie=movie_obj)
+                if favorites_qs.exists():
+                    messages.info(request, f"{movie_obj.title.upper()} already exists in your favorites.")
+                    return redirect("movie_detail", movie_obj.id)
+                Favorite.objects.create(user=request.user, movie=movie_obj)
+                messages.success(request, f"{movie_obj.title.upper()} added to favorites.")
+                return redirect("movie_detail", movie_obj)
+            messages.error(request, "movie not found.")
+            return redirect("movie_detail", movie_obj.id)

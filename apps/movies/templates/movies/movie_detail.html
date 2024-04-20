@@ -35,15 +35,11 @@
           </div>
 
           <div class="detail-img col-4 position-relative">
-            <img src="{{ movie.poster_path }}" alt="" class="img-fluid" />
-            {% comment %} <div class="fav position-absolute rounded-pill d-flex align-items-center justify-content-center top-0" >
-              <i class="ri-heart-fill fs-4 text-white"></i>
-            </div> {% endcomment %}
-
+            <img src="{{ movie.poster_path }}" alt="movie poster" class="img-fluid" />
             <form action="{% url "movie_detail" movie.id %}" method="post">
               {% csrf_token %}
               <input type="hidden" name="movie_id" value="{{ movie.id }}">
-              <button type="submit"  name="add_to_favorites" class="fav d-block position-absolute rounded-pill d-flex align-items-center justify-content-center top-0">
+              <button name="add_to_favorite" class="fav d-block position-absolute rounded-pill d-flex align-items-center justify-content-center top-0">
                 <i class="ri-heart-fill fs-4 text-white"></i>
               </button>
             </form>

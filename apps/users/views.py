@@ -38,9 +38,9 @@ class RegisterUserView(generic.CreateView):
                 self.request, "password and confirm password do not match, please try again.")
             return redirect("create_account")
 
-        # if not Validators.validate_password_length(user_data.get("password")):
-        #     messages.error(self.request, "password lenght cannot be less than 10, please try again.")
-        #     return redirect("create_account")
+        if not Validators.validate_password_length(user_data.get("password")):
+            messages.error(self.request, "password lenght cannot be less than 8, please try again.")
+            return redirect("create_account")
 
         user: CustomUser = self.model.objects.create(**user_data)
         user.set_password(user_data.get("password"))
