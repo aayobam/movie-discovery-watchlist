@@ -18,7 +18,7 @@ class MovieDetailView(generic.DetailView):
     context_object_name = "movie"
     pk_url_kwarg = "id"
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         if 'add_to_watchlist' in request.POST:
             return self.add_to_watchlist(request)
         elif 'add_to_favorites' in request.POST:
@@ -35,10 +35,10 @@ class MovieDetailView(generic.DetailView):
             watchlist_qs = WatchList.objects.filter(user=self.request.user, movie=movie_obj)
             if watchlist_qs.exists():
                 messages.info(request, f"{movie_obj.title.upper()} already exists in your watchlist.")
-                return redirect("home")
+                return redirect("movie_detail", movie_obj.id)
             WatchList.objects.create(user=request.user, movie=movie_obj)
             messages.success(request, f"{movie_obj.title.upper()} added to watchlist.")
-            return redirect("home")
+            return redirect("movie_detail", movie_obj.id)
 
     @transaction.atomic
     @method_decorator(login_required(login_url='user_login'))
@@ -49,7 +49,7 @@ class MovieDetailView(generic.DetailView):
             favorites_qs = Favorite.objects.filter(user=self.request.user, movie=movie_obj)
             if favorites_qs.exists():
                 messages.info(request, f"{movie_obj.title.upper()} already exists in your favorites.")
-                return redirect("home")
+                return redirect("movie_detail", movie_obj.id)
             Favorite.objects.create(user=request.user, movie=movie_obj)
             messages.success(request, f"{movie_obj.title.upper()} added to favorites.")
-            return redirect("home")
+            return redirect("movie_detail", movie_obj)

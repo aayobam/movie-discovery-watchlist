@@ -37,8 +37,7 @@ class FetchMoviewsFromTmdbApiView(generic.TemplateView):
                 "release_date": data["release_date"],
                 "rating": data["vote_average"]
             }
-            instance = Movie.objects.filter(
-                title=movie_data.get("title")).first()
+            instance = Movie.objects.filter(title=movie_data.get("title")).first()
             if instance:
                 self.patch_existing_movie(instance, movie_data)
             Movie.objects.get_or_create(**movie_data)
