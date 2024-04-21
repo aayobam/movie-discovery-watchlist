@@ -1,11 +1,8 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 from django.contrib import messages
 from django.views import generic
-from django.db import transaction
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.favorites.models import Favorite
-from apps.movies.models import Movie
-
 
 
 class FavoriteListView(LoginRequiredMixin, generic.ListView):

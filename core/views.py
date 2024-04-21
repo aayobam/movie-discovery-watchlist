@@ -14,40 +14,40 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
-class FetchMoviewsFromTmdbApiView(generic.TemplateView):
-    template_name = "api_response.html"
+# class FetchMoviewsFromTmdbApiView(generic.TemplateView):
+#     template_name = "api_response.html"
 
-    def get(self, request):
-        query_list = ['now_playing', 'popular', 'top_rated', 'upcoming']
-        movie_base_url = f"{API_BASE_URL}/movie/"
-        movie_list_query = random.choice(query_list)
-        url = f"{movie_base_url}{movie_list_query}"
-        headers = {
-            "Authorization": f"Bearer {BEARER_TOKEN}",
-            "accept": "application/json"
-        }
-        response = requests.get(url=url, headers=headers)
-        response_data = response.json().get("results", [])
-        for data in response_data:
-            movie_data = {
-                "title": data["title"],
-                "tag": movie_list_query,
-                "overview": data["overview"],
-                "poster_path": f"{MOVIE_BASE_URL}/w200{data['poster_path']}",
-                "release_date": data["release_date"],
-                "rating": data["vote_average"]
-            }
-            instance = Movie.objects.filter(title=movie_data.get("title")).first()
-            if instance:
-                self.patch_existing_movie(instance, movie_data)
-            Movie.objects.get_or_create(**movie_data)
-        context = {"response": response.text}
-        return render(request, self.template_name, context)
+#     def get(self, request):
+#         query_list = ['now_playing', 'popular', 'top_rated', 'upcoming']
+#         movie_base_url = f"{API_BASE_URL}/movie/"
+#         movie_list_query = random.choice(query_list)
+#         url = f"{movie_base_url}{movie_list_query}"
+#         headers = {
+#             "Authorization": f"Bearer {BEARER_TOKEN}",
+#             "accept": "application/json"
+#         }
+#         response = requests.get(url=url, headers=headers)
+#         response_data = response.json().get("results", [])
+#         for data in response_data:
+#             movie_data = {
+#                 "title": data["title"],
+#                 "tag": movie_list_query,
+#                 "overview": data["overview"],
+#                 "poster_path": f"{MOVIE_BASE_URL}/w200{data['poster_path']}",
+#                 "release_date": data["release_date"],
+#                 "rating": data["vote_average"]
+#             }
+#             instance = Movie.objects.filter(title=movie_data.get("title")).first()
+#             if instance:
+#                 self.patch_existing_movie(instance, movie_data)
+#             Movie.objects.get_or_create(**movie_data)
+#         context = {"response": response.text}
+#         return render(request, self.template_name, context)
 
-    def patch_existing_movie(self, instance, movie_data):
-        for key, value in movie_data.items():
-            setattr(instance, key, value)
-        instance.save()
+#     def patch_existing_movie(self, instance, movie_data):
+#         for key, value in movie_data.items():
+#             setattr(instance, key, value)
+#         instance.save()
 
 
 class HomeView(generic.ListView):
@@ -77,6 +77,7 @@ class HomeView(generic.ListView):
         context["user"] = self.request.user
         return context
 
+    @transaction.atomic
     def post(self, request):
         if 'add_to_watchlist' in request.POST:
             return self.add_to_watchlist(request)
@@ -91,12 +92,15 @@ class HomeView(generic.ListView):
         if request.method == "POST":
             movie_id = request.POST.get("movie_id")
             movie_obj = get_object_or_404(Movie, id=movie_id)
-            watchlist_qs = WatchList.objects.filter(user=self.request.user, movie=movie_obj)
+            watchlist_qs = WatchList.objects.filter(
+                user=self.request.user, movie=movie_obj)
             if watchlist_qs.exists():
-                messages.info(request, f"{movie_obj.title.upper()} already exists in your watchlist.")
+                messages.info(
+                    request, f"{movie_obj.title.upper()} already exists in your watchlist.")
                 return redirect("home")
             WatchList.objects.create(user=request.user, movie=movie_obj)
-            messages.success(request, f"{movie_obj.title.upper()} added to watchlist.")
+            messages.success(
+                request, f"{movie_obj.title.upper()} added to watchlist.")
             return redirect("home")
 
     @transaction.atomic
@@ -105,12 +109,15 @@ class HomeView(generic.ListView):
         if request.method == "POST":
             movie_id = request.POST.get("movie_id")
             movie_obj = get_object_or_404(Movie, id=movie_id)
-            favorites_qs = Favorite.objects.filter(user=self.request.user, movie=movie_obj)
+            favorites_qs = Favorite.objects.filter(
+                user=self.request.user, movie=movie_obj)
             if favorites_qs.exists():
-                messages.info(request, f"{movie_obj.title.upper()} already exists in your favorites.")
+                messages.info(
+                    request, f"{movie_obj.title.upper()} already exists in your favorites.")
                 return redirect("home")
             Favorite.objects.create(user=request.user, movie=movie_obj)
-            messages.success(request, f"{movie_obj.title.upper()} added to favorites.")
+            messages.success(
+                request, f"{movie_obj.title.upper()} added to favorites.")
             return redirect("home")
 
 

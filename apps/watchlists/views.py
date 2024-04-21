@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from apps.movies.models import Movie
 from apps.watchlists.models import WatchList
 
 
